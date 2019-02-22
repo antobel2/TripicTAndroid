@@ -1,86 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/ghostWhite"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:orientation="vertical"
-        android:layout_marginLeft="5dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/user"
-                />
-
-            <TextView
-                android:id="@+id/tvDisplayPost_Username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/user"
-                android:background="@color/ghostWhite"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:textSize="24sp" />
-        </LinearLayout>
-        <TextView
-            android:layout_weight="1"
-            android:id="@+id/tvDisplayPost_Date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="date"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:textSize="15sp"
-            android:textStyle="italic"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:fillViewport="true">
-
-            <TextView
-                android:id="@+id/tvdisplayPost_description"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:ellipsize="end"
-                android:textSize="20dp"
-                android:scrollbars="vertical"/>
-        </ScrollView>
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
 
-        <com.synnapps.carouselview.CarouselView
-            android:id="@+id/carouselView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:fillColor="@color/colorPrimaryDark"
-            app:pageColor="#00000000"
-            app:radius="5dp"
-            app:slideInterval="0"
-            app:strokeColor="#000000"
-            app:strokeWidth="1dp"
-            app:indicatorGravity="center|bottom"/>
-    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/user" />
+
+                    <TextView
+                        android:id="@+id/tvDisplayPost_Username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/ghostWhite"
+                        android:text="@string/user"
+                        android:textSize="24sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvDisplayPost_Date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="date"
+                    android:textSize="15sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:orientation="vertical">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:fillViewport="true">
+
+                    <TextView
+                        android:id="@+id/tvdisplayPost_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:ellipsize="end"
+                        android:scrollbars="vertical"
+                        android:textSize="20dp" />
+                </ScrollView>
+
+                <com.synnapps.carouselview.CarouselView
+                    android:id="@+id/carouselView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:fillColor="@color/colorPrimaryDark"
+                    app:indicatorGravity="center|bottom"
+                    app:pageColor="#00000000"
+                    app:radius="5dp"
+                    app:slideInterval="0"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="1dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
