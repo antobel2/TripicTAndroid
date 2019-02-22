@@ -15,7 +15,6 @@ import android.widget.ProgressBar;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.club.coolkids.clientandroid.R;
-import com.club.coolkids.clientandroid.models.EnuProgress;
 import com.club.coolkids.clientandroid.models.ImageUploadElement;
 
 import java.util.List;

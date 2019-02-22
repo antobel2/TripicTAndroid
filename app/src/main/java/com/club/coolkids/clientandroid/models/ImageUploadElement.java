@@ -3,9 +3,7 @@ package com.club.coolkids.clientandroid.models;
 import android.content.Context;
 import android.net.Uri;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import com.club.coolkids.clientandroid.create_post.EnuProgress;
 
 public class ImageUploadElement {
 

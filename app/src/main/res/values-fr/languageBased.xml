@@ -9,6 +9,7 @@
     <string name="postUploaderConnectionLostError">Connexion perdue, veuillez vérifier vos paramètres WIFI</string>
     <string name="postUploaderDescriptionHolder">Description</string>
     <string name="postUploaderAddPictures">Ajout des images </string>
+    <string name="pictureAlreadySelected">Une ou plusieures images ont déjà été sélectionnées et ne seront pas ajoutées</string>
     <string name="noImagesChosen">Vous n\'avez pas choisi d\'images</string>
     <string name="imagesTooBig">Une ou plusieures images sont trop grosses (plus de 5Mb) et ne sont pas intégrées à la publication</string>
     <string name="tooManyImages">Vous avez atteint la limite de 10 images. Les restantes ne seront pas ajoutées</string>
@@ -22,6 +23,4 @@
     <string name="newTrips">Nouveaux Voyages</string>
     <string name="trips">Voyages</string>
     <string name="createPost">Envoyer une publication</string>
-
-
 </resources>

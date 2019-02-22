@@ -23,7 +23,6 @@ import com.club.coolkids.clientandroid.models.dtos.CreatePictureDTO;
 import com.club.coolkids.clientandroid.models.dtos.CreatePostDTO;
 import com.club.coolkids.clientandroid.exceptions.ImageTooBigException;
 import com.club.coolkids.clientandroid.exceptions.TooManyImagesToUploadException;
-import com.club.coolkids.clientandroid.models.EnuProgress;
 import com.club.coolkids.clientandroid.models.ImageUploadElement;
 import com.club.coolkids.clientandroid.models.Token;
 import com.club.coolkids.clientandroid.services.DataService;
@@ -82,13 +81,12 @@ public class CreatePost extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-               if(s.toString().trim().length() > 0) {
-                   enableButton(btnSendPost);
-               }
-               else{
-                   if(customAdapter.dataSet.size() <= 0)
-                       disableButton(btnSendPost);
-               }
+                if (s.toString().trim().length() > 0) {
+                    enableButton(btnSendPost);
+                } else {
+                    if (customAdapter.dataSet.size() <= 0)
+                        disableButton(btnSendPost);
+                }
             }
         });
 
@@ -125,42 +123,41 @@ public class CreatePost extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
     }
 
-    private void sendPicture(CreatePictureDTO cDTO, final ImageUploadElement elt){
+    private void sendPicture(CreatePictureDTO cDTO, final ImageUploadElement elt) {
 
         Log.i("understandingUIbug", "Loading an image spinner   sendPicture " + elt.uri);
         //elt.progressState = EnuProgress.ongoing;
 
         DataService.getInstance().service.createPicture("Bearer " + Token.token.getToken(), cDTO)
-            .enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
 
-                    if(response.isSuccessful()) {
-                        Log.i("understandingUIbug", "Setting an Image to complete");
-                        elt.progressState = EnuProgress.complete;
-                        customAdapter.notifyDataSetChanged();
-                        uploadFinishedUpdater(false);
-                        Log.i("testAsync", "Call Reussi"+response.code());
+                        if (response.isSuccessful()) {
+                            Log.i("understandingUIbug", "Setting an Image to complete");
+                            elt.progressState = EnuProgress.complete;
+                            customAdapter.notifyDataSetChanged();
+                            uploadFinishedUpdater(false);
+                            Log.i("testAsync", "Call Reussi" + response.code());
+                        } else {
+                            elt.progressState = EnuProgress.complete;
+                            customAdapter.notifyDataSetChanged();
+
+                            Toast.makeText(getApplicationContext(), R.string.postUploaderImageLostError, Toast.LENGTH_SHORT).show();
+                            Log.i("testAsync", "CallFailed" + response.code());
+                            Intent i = new Intent(getApplicationContext(), CreatePost.class);
+                            startActivity(i);
+                            finish();
+                        }
                     }
 
-                    else{
-                        elt.progressState = EnuProgress.complete;
-                        customAdapter.notifyDataSetChanged();
-
-                        Toast.makeText(getApplicationContext(),R.string.postUploaderImageLostError, Toast.LENGTH_SHORT).show();
-                        Log.i("testAsync", "CallFailed"+response.code());
-                        Intent i = new Intent(getApplicationContext(),CreatePost.class);
-                        startActivity(i);
-                        finish();
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), R.string.postUploaderConnectionLostError, Toast.LENGTH_LONG).show();
+                        Log.i("failure", t.getMessage());
+                        t.printStackTrace();
                     }
-                }
-                @Override
-                public void onFailure(Call<Void> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(),R.string.postUploaderConnectionLostError, Toast.LENGTH_LONG).show();
-                    Log.i("failure", t.getMessage());
-                    t.printStackTrace();
-                }
-            });
+                });
     }
 
     private void sendToServer() {
@@ -175,38 +172,37 @@ public class CreatePost extends AppCompatActivity {
 
         //appel au serveur pour créer un post
         DataService.getInstance().service.createPost("Bearer " + Token.token.getToken(), cDTO)
-                .enqueue(new Callback<Integer>() {
-            @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
+            .enqueue(new Callback<Integer>() {
+                @Override
+                public void onResponse(Call<Integer> call, Response<Integer> response) {
 
-                if(response.isSuccessful()) {
-                    //commencement de l'upload des photos individuelles
+                    if (response.isSuccessful()) {
+                        //commencement de l'upload des photos individuelles
 
-                    uploadFinishedUpdater(true);
-                    Integer postId = response.body();
-                    Toast.makeText(getApplicationContext(),R.string.postUploaderAddPictures, Toast.LENGTH_SHORT).show();
-                    Log.i("understandingUIbug", "Post created");
-                    for (ImageUploadElement element: images) {
-                        element.progressState = EnuProgress.ongoing;
-                    }
-                    customAdapter.notifyDataSetChanged();
-                    for (ImageUploadElement element: images) {
-                        E e = new E();
-                        e.postId = postId;
-                        e.element = element;
-                        new B64AsyncTask().execute(e);
+                        uploadFinishedUpdater(true);
+                        Integer postId = response.body();
+                        Toast.makeText(getApplicationContext(), R.string.postUploaderAddPictures, Toast.LENGTH_SHORT).show();
+                        Log.i("understandingUIbug", "Post created");
+                        for (ImageUploadElement element : images) {
+                            element.progressState = EnuProgress.ongoing;
+                        }
+                        customAdapter.notifyDataSetChanged();
+                        for (ImageUploadElement element : images) {
+                            E e = new E();
+                            e.postId = postId;
+                            e.element = element;
+                            new B64AsyncTask().execute(e);
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), R.string.postUploaderMessageError, Toast.LENGTH_SHORT).show();
                     }
                 }
 
-                else{
-                    Toast.makeText(getApplicationContext(),R.string.postUploaderMessageError, Toast.LENGTH_SHORT).show();
+                @Override
+                public void onFailure(Call<Integer> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), R.string.postUploaderMessageError, Toast.LENGTH_LONG).show();
                 }
-            }
-            @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), R.string.postUploaderMessageError, Toast.LENGTH_LONG).show();
-            }
-        });
+            });
     }
 
     public class E {
@@ -261,7 +257,7 @@ public class CreatePost extends AppCompatActivity {
         //l'api ne reconnait pas le format standard
         Log.i("understandingUIbug", "end  b64 " + element.uri);
         byteBuffer.close();
-        return baseHeader+Base64.encodeToString(inputData,Base64.NO_WRAP);
+        return baseHeader + Base64.encodeToString(inputData, Base64.NO_WRAP);
     }
 
     //verifies si une image, en bytes, est plus grosse que 10Mb
@@ -274,13 +270,13 @@ public class CreatePost extends AppCompatActivity {
     }
 
     //remodifies le chemin pour calculer la bonne grosseur
-    private String convertURItoFilepath(Uri uri){
+    private String convertURItoFilepath(Uri uri) {
 
         Log.i("understandingUIbug", "Converting an image");
         String path = uri.getPath();
         //verifies si le chemin contient ':'. si oui, prendre le chemin après le split
         //tres probablement est dans la VM
-        if(path.contains(":")) {
+        if (path.contains(":")) {
             path = path.split(":")[1];
         }
         return path;
@@ -295,64 +291,72 @@ public class CreatePost extends AppCompatActivity {
 
             boolean anImageIsTooBig = false;
             //Obtient le data si une seule image a ete selectionne
-            if(data.getData()!=null){
+            if (data.getData() != null) {
                 Uri uri = data.getData();
 
                 try {
-                    addValidImageToUpload(uri);
-                }
-                catch (TooManyImagesToUploadException e) {
+                    if(!imageAlreadySelectedBefore(uri)){
+                        addValidImageToUpload(uri);
+                    } else {
+                        Toast.makeText(getApplicationContext(), R.string.pictureAlreadySelected, Toast.LENGTH_LONG).show();
+                    }
+                } catch (TooManyImagesToUploadException e) {
                     //on arrête de parcourir car la limite est atteinte
                     Toast.makeText(this.getApplicationContext(), R.string.tooManyImages, Toast.LENGTH_LONG).show();
-                }
-                catch (ImageTooBigException e) {
+                } catch (ImageTooBigException e) {
                     //l'image ne sera pas ajoutée mais on continue à parcourir
                     anImageIsTooBig = true;
                 }
             }
-
             //Obtient le data si plusieures dataSet ont ete sélectionnees
             else {
                 if (data.getClipData() != null) {
                     ClipData mClipData = data.getClipData();
 
                     for (int i = 0; i < mClipData.getItemCount(); i++) {
-
                         ClipData.Item item = mClipData.getItemAt(i);
                         Uri uri = item.getUri();
-
                         try {
-                            addValidImageToUpload(uri);
-                        }
-                        catch (TooManyImagesToUploadException e) {
+                            if(!imageAlreadySelectedBefore(uri)){
+                                addValidImageToUpload(uri);
+                            } else {
+                                Toast.makeText(getApplicationContext(), R.string.pictureAlreadySelected, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (TooManyImagesToUploadException e) {
                             //on arrête de parcourir car la limite est atteinte
                             Toast.makeText(this.getApplicationContext(), R.string.tooManyImages, Toast.LENGTH_LONG).show();
                             break;
-                        }
-                        catch (ImageTooBigException e) {
+                        } catch (ImageTooBigException e) {
                             //l'image ne sera pas ajoutée mais on continue à parcourir
                             anImageIsTooBig = true;
                         }
                     }
                 }
             }
-
-            if(anImageIsTooBig)
+            if (anImageIsTooBig)
                 Toast.makeText(this.getApplicationContext(), R.string.imagesTooBig, Toast.LENGTH_LONG).show();
 
             customAdapter.notifyDataSetChanged();
-        }
-
-        else {
+        } else {
             Toast.makeText(this, R.string.noImagesChosen, Toast.LENGTH_LONG).show();
         }
+    }
+
+    //vérifies si une image est déja sélectionnée avant d'être ajoutée à la liste
+    private boolean imageAlreadySelectedBefore(Uri _uri){
+        for (ImageUploadElement img: customAdapter.dataSet) {
+            if(img.uri.equals(_uri)){
+                return true;
+            }
+        }
+        return false;
     }
 
     //tentes de créer une image valide
     private void addValidImageToUpload(Uri uri) throws TooManyImagesToUploadException, ImageTooBigException {
 
         //verifies si l'image est trop grosse
-        if(!imageIsSmallerThanMaxSize(uri))
+        if (!imageIsSmallerThanMaxSize(uri))
             throw new ImageTooBigException();
 
         //verifies si il y a assez de place pour une autre image
@@ -360,19 +364,19 @@ public class CreatePost extends AppCompatActivity {
         //permettant de disable le bouton directement après l'envoi
         //si c'est le cas on ne veut pas lancer d'exception puisque la liste n'ajoutera pas l'image
         //mais on veut quand même empêcher l'usage du bouton
-        if(customAdapter.dataSet.size() >= MAX_IMAGES_PER_POST -1) {
+        if (customAdapter.dataSet.size() >= MAX_IMAGES_PER_POST - 1) {
             disableButton(btnGallery);
         }
 
         //cette fois-ci, on veut envoyer une exception car la limite a été dépassée
         //et on veut prévenir l'utilisateur qu'il n'aura pas toutes ses photos dans la liste
-        if(customAdapter.dataSet.size() >= MAX_IMAGES_PER_POST) {
+        if (customAdapter.dataSet.size() >= MAX_IMAGES_PER_POST) {
             throw new TooManyImagesToUploadException();
         }
 
         //vérifies si des dataSet avaient deja ete ajoutees.
         //si non, debloque le bouton pour permettre d'envoyer un post
-        if(!btnSendPost.isEnabled()){
+        if (!btnSendPost.isEnabled()) {
             enableButton(btnSendPost);
         }
 
@@ -381,10 +385,10 @@ public class CreatePost extends AppCompatActivity {
 
     //update le compteur d'images bien envoyées. Si le compteur atteint le size
     //de la liste d'images à envoyer, ça veut dire que chaque image s'est envoyée avec succès
-    private void uploadFinishedUpdater (boolean firstCall){
-        if(images.size()> 0 ) {
+    private void uploadFinishedUpdater(boolean firstCall) {
+        if (images.size() > 0) {
             //vérifies si il y a des images
-            if(!firstCall) {
+            if (!firstCall) {
                 succesfulImageUploads++;
                 if (succesfulImageUploads == images.size()) {
                     Toast.makeText(getApplicationContext(),
@@ -397,7 +401,7 @@ public class CreatePost extends AppCompatActivity {
                     finish();
                 }
             }
-        }else if (textDesc.getText().length() > 0){
+        } else if (textDesc.getText().length() > 0) {
             //il n'y a pas d'images mais il y a du texte
             Intent i = new Intent(getApplicationContext(), DisplayPosts.class);
             i.putExtra("ActivityId", currentActivityId);
@@ -411,14 +415,14 @@ public class CreatePost extends AppCompatActivity {
     ///
 
     //raccourci pour enable les boutons selon un style commun
-    private void enableButton(Button btn){
+    private void enableButton(Button btn) {
         btn.setEnabled(true);
         btn.setTextColor(getResources().getColor(R.color.colorTextDisabled));
         btn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
     }
 
     //raccourci pour disable les boutons selon un style commun
-    private void disableButton(Button btn){
+    private void disableButton(Button btn) {
         btn.setEnabled(false);
         btn.setTextColor(getResources().getColor(R.color.colorTextDisabled));
         btn.setBackgroundColor(getResources().getColor(R.color.lightGray));

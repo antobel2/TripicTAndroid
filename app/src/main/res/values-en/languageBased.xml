@@ -9,6 +9,7 @@
     <string name="postUploaderConnectionLostError">Connection was lost, verify your wifi settings</string>
     <string name="postUploaderDescriptionHolder">Description</string>
     <string name="postUploaderAddPictures">Adding pictures</string>
+    <string name="pictureAlreadySelected">One or more images were already selected and not added</string>
     <string name="postUploader">Send Post</string>
     <string name="noImagesChosen">No pictures were selected</string>
     <string name="imagesTooBig">One or more images were more than 5Mb and not added to the post</string>
