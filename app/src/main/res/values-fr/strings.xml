@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tripName">Nom du voyage</string>
+    <string name="activityName">Nom de l\'activité</string>
+    <string name="btnCreate">Créer</string>
+    <string name="ErrorName">Veuillez saisir un nom entre 1 et 35 caractères</string>
+    <string name="ActivityAdded">L\'activité a bien été créée</string>
+    <string name="btnComment">Commentaires</string>
+    <string name="noPost">Aucune publication à afficher</string>
+    <string name="username">Nom d\'utilisateur</string>
+    <string name="password">Mot de passe</string>
+    <string name="btnLogin">Connexion</string>
+    <string name="linkSignup">Vous n\'avez pas encore de compte? Créez-vous en un maintenant!</string>
+    <string name="Athenticating">Authentification...</string>
+    <string name="loginFailed">Échec de la connexion. Veuillez corriger les erreurs</string>
+    <string name="title_activity_post_details">Détails de la publication</string>
+    <string name="noTrip">Créez un nouveau voyage!</string>
+    <string name="noActivity">Créez une nouvelle activité!</string>
+</resources>

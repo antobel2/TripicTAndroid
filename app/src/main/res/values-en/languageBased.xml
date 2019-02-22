@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="postUploaderMessageStart">Initialising</string>
+    <string name="postUploaderMessageConverting">Converting images</string>
+    <string name="postUploaderMessageSending">Uploading images</string>
+    <string name="postUploaderMessageSuccesful">Post uploaded successfully!</string>
+    <string name="postUploaderMessageError">Looks like something went wrong</string>
+    <string name="postUploaderImageLostError">One or more images were not sent, cancelling upload</string>
+    <string name="postUploaderConnectionLostError">Connection was lost, verify your wifi settings</string>
+    <string name="postUploaderDescriptionHolder">Description</string>
+    <string name="postUploaderAddPictures">Adding pictures</string>
+    <string name="postUploader">Send Post</string>
+    <string name="noImagesChosen">No pictures were selected</string>
+    <string name="imagesTooBig">One or more images were more than 5Mb and not added to the post</string>
+    <string name="tooManyImages">You have reached the 10 image limit. Further Images will not be added</string>
+    <string name="user">User</string>
+    <string name="addPictures">Add pictures</string>
+    <string name="sendPost">Send post</string>
+    <string name="errConectServer">Failed to connect to server. Please try again later.</string>
+    <string name="pleaseWait">Please Wait</string>
+    <string name="waitingForServer">Waiting for server</string>
+    <string name="newTrips">New Trips</string>
+    <string name="trips">Trips</string>
+    <string name="createPost">Upload your post</string>
+
+</resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".create_post.ImagePreview">
+
+
+    <com.club.coolkids.clientandroid.create_post.SquareImageView
+        android:id="@+id/imageUploadPreview"
+        android:layout_margin="20px"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        />
+
+    <ProgressBar
+        android:id="@+id/img_progress"
+        style="?android:attr/progressBarStyle"
+        android:background="@android:color/transparent"
+        android:layout_margin="70px"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:indeterminateTint="@color/darkerLavender"
+        android:visibility="invisible"/>
+
+
+</FrameLayout>

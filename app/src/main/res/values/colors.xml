@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2B8087</color>
+    <color name="colorPrimaryDark">#206268</color>
+    <color name="colorAccent">#2B8087</color>
+    <color name="primaryLavender">#6C648B</color>
+    <color name="darkerLavender">#564f70</color>
+    <color name="lighterLavender">#897eb2</color>
+    <color name="primaryDustyRose">#B6A19E</color>
+    <color name="accentAqua">#87c3c4</color>
+    <color name="ghostWhite">#F8F8FF</color>
+    <color name="transparentGhostWhite">#80F8F8FF</color>
+    <color name="lightGray">#D3D3D3</color>
+    <color name="darkerAqua">#4d9180</color>
+    <color name="colorHeader">#2B8087</color>
+    <color name="colorText">#000</color>
+    <color name="colorTextDisabled">#FFF</color>
+    <color name="bonusColor">#6AA3BA</color>
+    <color name="gray">#b9b9b9</color>
+</resources>

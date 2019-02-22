@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="postUploaderMessageStart">Préparation en cours</string>
+    <string name="postUploaderMessageConverting">Conversion des images</string>
+    <string name="postUploaderMessageSending">Envoi des images</string>
+    <string name="postUploaderMessageSuccesful">Publication envoyée avec succès!</string>
+    <string name="postUploaderMessageError">Il y a eu un problème lors de l\'envoi</string>
+    <string name="postUploaderImageLostError">Une ou plusieures images ne se sont pas envoyées, annulation de l\'envoi</string>
+    <string name="postUploaderConnectionLostError">Connexion perdue, veuillez vérifier vos paramètres WIFI</string>
+    <string name="postUploaderDescriptionHolder">Description</string>
+    <string name="postUploaderAddPictures">Ajout des images </string>
+    <string name="noImagesChosen">Vous n\'avez pas choisi d\'images</string>
+    <string name="imagesTooBig">Une ou plusieures images sont trop grosses (plus de 5Mb) et ne sont pas intégrées à la publication</string>
+    <string name="tooManyImages">Vous avez atteint la limite de 10 images. Les restantes ne seront pas ajoutées</string>
+    <string name="postUploader">Envoyer la publication</string>
+    <string name="user">Utilisateur</string>
+    <string name="addPictures">Ajouter des photos</string>
+    <string name="sendPost">Envoyer la publication</string>
+    <string name="errConectServer">Erreur de connection au serveur. Veuillez réessayer plus tard.</string>
+    <string name="pleaseWait">Veuillez patienter</string>
+    <string name="waitingForServer">Attente de réponse du serveur</string>
+    <string name="newTrips">Nouveaux Voyages</string>
+    <string name="trips">Voyages</string>
+    <string name="createPost">Envoyer une publication</string>
+
+
+</resources>
