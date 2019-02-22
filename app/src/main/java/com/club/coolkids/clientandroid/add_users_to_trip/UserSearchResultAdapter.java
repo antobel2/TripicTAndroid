@@ -30,6 +30,7 @@ public class UserSearchResultAdapter extends ArrayAdapter<UserSearchResultDTO> {
         TextView tvUser = v.findViewById(R.id.tvUser);
 
         tvUser.setText(userDTO.lastName + ", " + userDTO.firstName + " | " + userDTO.userName);
+        tvUser.setTextSize(20);
 
         tvUser.setOnClickListener(new View.OnClickListener() {
             @Override

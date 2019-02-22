@@ -78,25 +78,13 @@ public class DisplayTrips extends AppCompatActivity {
         _tvTrips = findViewById(R.id.tvTrips);
         _tvNewTrips = findViewById(R.id.tvNewTrips);
 
-        serverService = DataService.getInstance().service;
-
-        getTrips();
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showEditDialog();
-            }
-        });
-
         ///// DRAWER /////
         NavigationView navView = findViewById(R.id.nav_view);
         final DrawerLayout drawer_layout = findViewById(R.id.drawer_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         View header = navView.getHeaderView(0);
         TextView nav_user = header.findViewById(R.id.userName);
-        nav_user.setText(getString(R.string.hello) + " " + getIntent().getStringExtra("Username"));
+        nav_user.setText(getIntent().getStringExtra("Username"));
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -140,13 +128,28 @@ public class DisplayTrips extends AppCompatActivity {
         drawer_layout.addDrawerListener(toggle);
         toggle.syncState();
 
-        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
+        serverService = DataService.getInstance().service;
+
+        progressD = ProgressDialog.show(DisplayTrips.this, getString(R.string.pleaseWait),
+                getString(R.string.ServerAnswer), true);
+
+        getTrips();
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showEditDialog();
+            }
+        });
+
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefreshTrips);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-//                progressD = ProgressDialog.show(DisplayTrips.this, "Veuillez patienter",
-//                        "Attente de réponse du serveur", true);
-                getTrips();
+                progressD = ProgressDialog.show(DisplayTrips.this, getString(R.string.pleaseWait),
+                        getString(R.string.ServerAnswer), true);
+                startActivity(getIntent());
                 pullToRefresh.setRefreshing(false);
             }
         });
@@ -158,6 +161,7 @@ public class DisplayTrips extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<TripDTO>> call, Response<List<TripDTO>> response) {
                 if (response.isSuccessful()) {
+                    progressD.dismiss();
                     List<TripDTO> lstTrips = response.body();
                     if (lstTrips == null || lstTrips.size() == 0) {
                         _tvNoTrip.setVisibility(View.VISIBLE);

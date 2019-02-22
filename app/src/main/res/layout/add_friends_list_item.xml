@@ -11,8 +11,7 @@
         android:textColor="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:enabled="false"
-        android:layout_weight="1"/>
+        android:enabled="false"/>
 
     <TextView
         android:layout_width="wrap_content"

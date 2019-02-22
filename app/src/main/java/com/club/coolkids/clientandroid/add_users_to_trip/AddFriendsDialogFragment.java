@@ -52,6 +52,7 @@ public class AddFriendsDialogFragment extends DialogFragment {
     List<UserSearchResultDTO> users = new ArrayList<>();
     AddFriendAdapter _adapterLowerList;
     List<SignedInUserDTO> usersLowerList = new ArrayList<>();
+    List<String> usersLowerListUDTO = new ArrayList<>();
     UserSearchResultDTO mUser;
 
     private ProgressDialog progressD;
@@ -86,8 +87,10 @@ public class AddFriendsDialogFragment extends DialogFragment {
 
         _nameText = v.findViewById(R.id.actv_findFriends);
         _btnAdd = v.findViewById(R.id.btn_add);
+        disableButton(_btnAdd);
         _btnCancel = v.findViewById(R.id.btn_cancel);
         _btn_addAll = v.findViewById(R.id.btn_addAll);
+        disableButton(_btn_addAll);
         _inputLayout_addedFriendName = v.findViewById(R.id.inputLayout_findFriends);
         _lvAddFriends = v.findViewById(R.id.lvAddFriends);
 
@@ -128,10 +131,12 @@ public class AddFriendsDialogFragment extends DialogFragment {
                             public void onResponse(Call<List<UserSearchResultDTO>> call, Response<List<UserSearchResultDTO>> response) {
                                 if (response.isSuccessful()) {
                                     users.clear();
+                                    _adapter.clear();
                                     List<UserSearchResultDTO> lstUsers = response.body();
                                     if (lstUsers != null && lstUsers.size() != 0) {
                                         for (UserSearchResultDTO u:lstUsers) {
-                                            users.add(u);
+                                            if (!usersLowerListUDTO.contains(u.toString()))
+                                                users.add(u);
                                         }
                                         _adapter.addAll(users);
                                         _nameText.setAdapter(_adapter);
@@ -174,17 +179,20 @@ public class AddFriendsDialogFragment extends DialogFragment {
         _btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                disableButton(_btnAdd);
                 if(_nameText.getText().toString().trim() == "" || _nameText.getText().toString().isEmpty())
                     return;
                 final String name = _nameText.getText().toString().trim();
                 Log.i("EVENT", "Event Add User");
                 UserSearchResultDTO u = mUser;
+                usersLowerListUDTO.add(u.toString());
                 SignedInUserDTO user = new SignedInUserDTO(u.userId, u.userName, u.firstName, u.lastName);
                 usersLowerList.add(user);
                 _adapterLowerList.add(user);
                 _lvAddFriends.setAdapter(_adapterLowerList);
                 mUser = null;
                 _nameText.setText("");
+                enableButton(_btn_addAll);
             }
         });
 
@@ -199,6 +207,7 @@ public class AddFriendsDialogFragment extends DialogFragment {
         _btn_addAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                disableButton(_btn_addAll);
                 InviteUserToTripDTO i = new InviteUserToTripDTO(getActivity().getIntent().getIntExtra("TripId", 0));
                 List<String> lst = new ArrayList<>();
                 for (SignedInUserDTO u:usersLowerList) {
@@ -215,6 +224,7 @@ public class AddFriendsDialogFragment extends DialogFragment {
                         else {
                             Log.i("Retrofit", "code " + response.code());
                             Toast.makeText(getContext(), R.string.serverError, Toast.LENGTH_SHORT).show();
+                            enableButton(_btn_addAll);
                         }
                     }
 
@@ -222,6 +232,7 @@ public class AddFriendsDialogFragment extends DialogFragment {
                     public void onFailure(Call<Void> call, Throwable t) {
                         Log.i("Retrofit", "code " + t.getMessage());
                         Toast.makeText(getContext(), R.string.serverError, Toast.LENGTH_SHORT).show();
+                        enableButton(_btn_addAll);
                     }
                 });
             }
@@ -251,15 +262,33 @@ public class AddFriendsDialogFragment extends DialogFragment {
         _nameText.performCompletion();
         _nameText.dismissDropDown();
         mUser = e.userDTO;
+        enableButton(_btnAdd);
     }
 
     @Subscribe
     public void deleteFriend(EventDeleteFriend e){
         Log.i("EVENT", "Event Delete User");
-        SignedInUserDTO user = e.userDTO;
-        usersLowerList.remove(user);
-        _adapterLowerList.remove(user);
+        SignedInUserDTO u = e.userDTO;
+        int i = usersLowerList.indexOf(u);
+        usersLowerListUDTO.remove(i);
+        usersLowerList.remove(u);
+        if (usersLowerList.size() == 0)
+        {
+            disableButton(_btn_addAll);
+        }
+        _adapterLowerList.remove(u);
         _lvAddFriends.setAdapter(_adapterLowerList);
     }
 
+    private void enableButton(Button btn){
+        btn.setEnabled(true);
+        btn.setTextColor(getResources().getColor(R.color.colorTextDisabled));
+        btn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+    }
+
+    private void disableButton(Button btn){
+        btn.setEnabled(false);
+        btn.setTextColor(getResources().getColor(R.color.colorTextDisabled));
+        btn.setBackgroundColor(getResources().getColor(R.color.lightGray));
+    }
 }

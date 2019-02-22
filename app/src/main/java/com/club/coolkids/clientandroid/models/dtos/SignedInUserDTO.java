@@ -10,4 +10,9 @@ public class SignedInUserDTO {
         firstName = f;
         lastName = l;
     }
+
+    @Override
+    public String toString() {
+        return lastName + ", " + firstName + " | " + userName;
+    }
 }
