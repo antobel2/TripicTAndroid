@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.club.coolkids.clientandroid.R;
+import com.club.coolkids.clientandroid.add_users_to_trip.AddFriendsDialogFragment;
+import com.club.coolkids.clientandroid.display_comments.DisplayCommentsDialogFragment;
 import com.club.coolkids.clientandroid.models.NewBus;
 import com.club.coolkids.clientandroid.models.Token;
 import com.club.coolkids.clientandroid.services.IDataService;
@@ -72,4 +74,9 @@ public class PostDetails extends AppCompatActivity {
         }
     };
 
+    private void showEditDialogDisplayComments(){
+        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+        DisplayCommentsDialogFragment displayCommentsDm = DisplayCommentsDialogFragment.newInstance(String.valueOf(R.string.comments), this.getIntent().getIntExtra("PostId", 0));
+        displayCommentsDm.show(fm, "Display Comments Dialog Fragment");
+    }
 }

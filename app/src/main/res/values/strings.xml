@@ -59,4 +59,5 @@
     <string name="usersAdded">Les utilisateurs ont bien été ajoutés</string>
     <string name="hello">Bonjour</string>
     <string name="connectionError">Le nom d\'utilisateur ou le mot de passe est incorrect</string>
+    <string name="comments">Commentaires</string>
 </resources>
