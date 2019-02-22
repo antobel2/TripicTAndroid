@@ -15,6 +15,7 @@ import com.club.coolkids.clientandroid.models.Token;
 import com.club.coolkids.clientandroid.models.dtos.PostDTO;
 import com.club.coolkids.clientandroid.events.EventOnClickForDetails;
 import com.club.coolkids.clientandroid.models.NewBus;
+import com.club.coolkids.clientandroid.services.IDataService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +111,7 @@ public class DisplayPostAdapter extends RecyclerView.Adapter<DisplayPostAdapter.
             holder.imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             Glide.with(holder.postDateTextView.getContext())
                     .asBitmap()
-                    .load("http://e1-dev.projet.college-em.info:8080/api/Pictures/GetPictureFromId/" + mCurrentPost.idTable.get(0)) //toujours prendre la premiere image
+                    .load(IDataService.endpoint + "/api/Pictures/GetPictureFromId/" + mCurrentPost.idTable.get(0)) //toujours prendre la premiere image
                     .into(holder.imageView);
         }
 

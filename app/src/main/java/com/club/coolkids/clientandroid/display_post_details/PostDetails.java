@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 import com.club.coolkids.clientandroid.R;
 import com.club.coolkids.clientandroid.models.NewBus;
 import com.club.coolkids.clientandroid.models.Token;
+import com.club.coolkids.clientandroid.services.IDataService;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
@@ -65,7 +66,7 @@ public class PostDetails extends AppCompatActivity {
             else{
                 Glide.with(getApplicationContext())
                         .asBitmap()
-                        .load("http://e1-dev.projet.college-em.info:8080/api/Pictures/GetPictureFromId/" + postIdTable.get(position))
+                        .load(IDataService.endpoint + "/api/Pictures/GetPictureFromId/" + postIdTable.get(position))
                         .into(imageView);
             }
         }
