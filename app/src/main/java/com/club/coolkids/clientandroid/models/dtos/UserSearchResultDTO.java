@@ -4,7 +4,8 @@ public class UserSearchResultDTO {
 
     public String userId, firstName, lastName, userName;
 
-    public UserSearchResultDTO(String f, String l, String u){
+    public UserSearchResultDTO(String i, String f, String l, String u){
+        userId = i;
         firstName = f;
         lastName = l;
         userName = u;

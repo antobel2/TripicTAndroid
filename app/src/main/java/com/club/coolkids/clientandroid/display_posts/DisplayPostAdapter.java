@@ -58,7 +58,7 @@ public class DisplayPostAdapter extends RecyclerView.Adapter<DisplayPostAdapter.
                     for (int i : item.idTable){
                         toArrayList.add(Integer.toString(i));
                     }
-                    NewBus.bus.post(new EventOnClickForDetails(item.id, item.text, toArrayList, item.date, item.userName));
+                    NewBus.bus.post(new EventOnClickForDetails(item.id, item.text, toArrayList, item.date, item.name));
                 }
             });
         }
@@ -122,7 +122,7 @@ public class DisplayPostAdapter extends RecyclerView.Adapter<DisplayPostAdapter.
 
         holder.postDescriptionTextView.setText(mDataset[position].text);
         holder.postDateTextView.setText(mDataset[position].date);
-        holder.textUsername.setText(mDataset[position].userName);
+        holder.textUsername.setText(mDataset[position].name);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

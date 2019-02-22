@@ -8,7 +8,7 @@
     tools:context=".display_trips.DisplayTrips">
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/pullToRefresh"
+        android:id="@+id/pullToRefreshTrips"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

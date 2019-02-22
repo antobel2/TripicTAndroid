@@ -67,17 +67,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    //Empêche l'utilisateur de mettre un espace dans son mot de passe
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (passwordText.hasFocus()) {
-            if (keyCode == KeyEvent.KEYCODE_SPACE) {
-                return false;
-            }
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
     public void login() {
         Log.d(TAG, "Login");
 
