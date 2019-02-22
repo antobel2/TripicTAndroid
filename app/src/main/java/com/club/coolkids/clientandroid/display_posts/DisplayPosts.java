@@ -62,7 +62,7 @@ public class DisplayPosts extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         View header = navView.getHeaderView(0);
         TextView nav_user = header.findViewById(R.id.userName);
-        nav_user.setText(getIntent().getStringExtra("Username"));
+        nav_user.setText(getString(R.string.hello) + Token.token.getName());
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -129,6 +129,7 @@ public class DisplayPosts extends AppCompatActivity {
                 int id = getIntent().getIntExtra("ActivityId", 0);
                 Intent i = new Intent(getApplicationContext(), CreatePost.class);
                 i.putExtra("ActivityId", id);
+                i.putExtra("ActivityName", getIntent().getStringExtra("ActivityName"));
                 startActivity(i);
             }
         });
@@ -236,7 +237,6 @@ public class DisplayPosts extends AppCompatActivity {
         intent.putStringArrayListExtra("idTable", e.idTable);
         intent.putExtra("text", e.text);
         intent.putExtra("date", e.date);
-        intent.putExtra("userName", e.userName);
         startActivity(intent);
     }
 }

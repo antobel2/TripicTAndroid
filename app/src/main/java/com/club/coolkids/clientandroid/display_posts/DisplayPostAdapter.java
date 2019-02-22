@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.club.coolkids.clientandroid.R;
+import com.club.coolkids.clientandroid.models.Token;
 import com.club.coolkids.clientandroid.models.dtos.PostDTO;
 import com.club.coolkids.clientandroid.events.EventOnClickForDetails;
 import com.club.coolkids.clientandroid.models.NewBus;
@@ -121,7 +122,7 @@ public class DisplayPostAdapter extends RecyclerView.Adapter<DisplayPostAdapter.
 
         holder.postDescriptionTextView.setText(mDataset[position].text);
         holder.postDateTextView.setText(mDataset[position].date);
-        holder.textUsername.setText(mDataset[position].name);
+        holder.textUsername.setText(Token.token.getName());
     }
 
     // Return the size of your dataset (invoked by the layout manager)

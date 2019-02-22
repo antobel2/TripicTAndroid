@@ -94,7 +94,7 @@ public class DisplayActivities extends AppCompatActivity implements View.OnClick
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         View header = navView.getHeaderView(0);
         TextView nav_user = header.findViewById(R.id.userName);
-        nav_user.setText(getIntent().getStringExtra("Username"));
+        nav_user.setText(getString(R.string.hello) + Token.token.getName());
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -245,7 +245,6 @@ public class DisplayActivities extends AppCompatActivity implements View.OnClick
         Intent i = new Intent(getApplicationContext(), DisplayPosts.class);
         i.putExtra("ActivityName", e.activityDTO.name);
         i.putExtra("ActivityId", e.activityDTO.id);
-        i.putExtra("Username", getIntent().getStringExtra("Username"));
         startActivity(i);
     }
 

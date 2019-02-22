@@ -6,13 +6,16 @@ import java.util.UUID;
 
 public class Token {
 
-    public Token(String tokenValue){
+    public Token(String tokenValue, String name){
         access_token = tokenValue;
+        name_user = name;
     }
 
     public static Token token;
 
     private String access_token;
+
+    private String name_user;
 
     @Override
     public String toString() {
@@ -28,6 +31,13 @@ public class Token {
         Token.token = t;
     }
 
+    public String getName() {
+        return Token.token.name_user;
+    }
+
+    public void setName(String s) {
+        Token.token.name_user = s;
+    }
     public void deleteToken()
     {
         Token.token = null;

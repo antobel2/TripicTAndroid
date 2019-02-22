@@ -53,6 +53,7 @@ public class CreatePost extends AppCompatActivity {
     public Button btnGallery;
     public Button btnSendPost;
     public int currentActivityId;
+    public String activityName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,7 @@ public class CreatePost extends AppCompatActivity {
         setTitle(R.string.createPost);
         this.convertedImages = new ArrayList<>();
         currentActivityId = this.getIntent().getIntExtra("ActivityId", 0);
+        activityName = this.getIntent().getStringExtra("ActivityName");
 
         textDesc = findViewById(R.id.txtPostDesc);
         btnGallery = findViewById(R.id.btnGallery);
@@ -397,6 +399,7 @@ public class CreatePost extends AppCompatActivity {
 
                     Intent i = new Intent(getApplicationContext(), DisplayPosts.class);
                     i.putExtra("ActivityId", currentActivityId);
+                    i.putExtra("ActivityName", activityName);
                     startActivity(i);
                     finish();
                 }
@@ -405,6 +408,7 @@ public class CreatePost extends AppCompatActivity {
             //il n'y a pas d'images mais il y a du texte
             Intent i = new Intent(getApplicationContext(), DisplayPosts.class);
             i.putExtra("ActivityId", currentActivityId);
+            i.putExtra("ActivityName", activityName);
             startActivity(i);
             finish();
         }

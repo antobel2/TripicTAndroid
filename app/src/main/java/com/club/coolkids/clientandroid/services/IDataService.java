@@ -81,6 +81,9 @@ public interface IDataService {
     @POST("api/Trips/InviteUserToTrip")
     Call<Void> inviteUserToTrip(@Header("Authorization") String authorization, @Body InviteUserToTripDTO inviteUserToTripDTO);
 
+    @GET("api/Account/CurrentUser")
+    Call<SignedInUserDTO> getCurrentUser(@Header("Authorization") String authorization);
+
      /*
     @GET("/pokemons/{id}/{uid}/details/")
     Call<PokDetails> getPokemonDetails(@Path("id") int pokId, @Path("uid") String userId);

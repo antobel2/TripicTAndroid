@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.club.coolkids.clientandroid.R;
 import com.club.coolkids.clientandroid.models.NewBus;
+import com.club.coolkids.clientandroid.models.Token;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
@@ -47,7 +48,7 @@ public class PostDetails extends AppCompatActivity {
         tvDisplayPost_Date.setText(postDate);
         TextView tvdisplayPost_description = findViewById(R.id.tvdisplayPost_description);
         TextView tvUsername = findViewById(R.id.tvDisplayPost_Username);
-        tvUsername.setText(userName);
+        tvUsername.setText(Token.token.getName());
         tvdisplayPost_description.setText(postText);
     }
 

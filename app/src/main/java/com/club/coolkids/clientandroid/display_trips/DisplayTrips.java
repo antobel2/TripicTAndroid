@@ -23,6 +23,7 @@ import com.club.coolkids.clientandroid.display_activities.DisplayActivities;
 import com.club.coolkids.clientandroid.R;
 import com.club.coolkids.clientandroid.login_signup.LoginActivity;
 import com.club.coolkids.clientandroid.create_trip.TripDialogFragment;
+import com.club.coolkids.clientandroid.models.dtos.SignedInUserDTO;
 import com.club.coolkids.clientandroid.models.dtos.TripDTO;
 import com.club.coolkids.clientandroid.events.EventNewTrip;
 import com.club.coolkids.clientandroid.events.EventTripToActivities;
@@ -78,13 +79,63 @@ public class DisplayTrips extends AppCompatActivity {
         _tvTrips = findViewById(R.id.tvTrips);
         _tvNewTrips = findViewById(R.id.tvNewTrips);
 
+        serverService = DataService.getInstance().service;
+
+        progressD = ProgressDialog.show(DisplayTrips.this, getString(R.string.pleaseWait),
+                getString(R.string.ServerAnswer), true);
+
+        serverService.getCurrentUser("Bearer " + Token.token.getToken()).enqueue(new Callback<SignedInUserDTO>() {
+            @Override
+            public void onResponse(Call<SignedInUserDTO> call, Response<SignedInUserDTO> response) {
+                if (response.isSuccessful()) {
+                    Token.token.setName(response.body().firstName + " " + response.body().lastName);
+                    NavigationView navView = findViewById(R.id.nav_view);
+                    final DrawerLayout drawer_layout = findViewById(R.id.drawer_layout);
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                    View header = navView.getHeaderView(0);
+                    TextView nav_user = header.findViewById(R.id.userName);
+                    nav_user.setText(getString(R.string.hello) + Token.token.getName());
+                }
+                else {
+                    Token.token.setName("Guest");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignedInUserDTO> call, Throwable t) {
+                Log.i("Retrofit", "code " + t.getMessage());
+                Toast.makeText(getApplicationContext(), R.string.serverError, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        getTrips();
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showEditDialog();
+            }
+        });
+
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefreshTrips);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                progressD = ProgressDialog.show(DisplayTrips.this, getString(R.string.pleaseWait),
+                        getString(R.string.ServerAnswer), true);
+                startActivity(getIntent());
+                pullToRefresh.setRefreshing(false);
+            }
+        });
+
         ///// DRAWER /////
         NavigationView navView = findViewById(R.id.nav_view);
         final DrawerLayout drawer_layout = findViewById(R.id.drawer_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         View header = navView.getHeaderView(0);
         TextView nav_user = header.findViewById(R.id.userName);
-        nav_user.setText(getIntent().getStringExtra("Username"));
+        nav_user.setText(getString(R.string.hello) + Token.token.getName());
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -127,32 +178,6 @@ public class DisplayTrips extends AppCompatActivity {
                 R.string.close_drawer);
         drawer_layout.addDrawerListener(toggle);
         toggle.syncState();
-
-        serverService = DataService.getInstance().service;
-
-        progressD = ProgressDialog.show(DisplayTrips.this, getString(R.string.pleaseWait),
-                getString(R.string.ServerAnswer), true);
-
-        getTrips();
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showEditDialog();
-            }
-        });
-
-        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefreshTrips);
-        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                progressD = ProgressDialog.show(DisplayTrips.this, getString(R.string.pleaseWait),
-                        getString(R.string.ServerAnswer), true);
-                startActivity(getIntent());
-                pullToRefresh.setRefreshing(false);
-            }
-        });
     }
 
     //Appel API
@@ -243,7 +268,6 @@ public class DisplayTrips extends AppCompatActivity {
         Intent i = new Intent(getApplicationContext(), DisplayActivities.class);
         i.putExtra("TripName", e.tripDTO.name);
         i.putExtra("TripId", e.tripDTO.id);
-        i.putExtra("Username", getIntent().getStringExtra("Username"));
         startActivity(i);
     }
 
