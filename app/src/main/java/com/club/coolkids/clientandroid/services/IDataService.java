@@ -28,8 +28,8 @@ import retrofit2.http.Path;
 public interface IDataService {
 
     //String endpoint = "http://e1-test.projet.college-em.info:8080";
-    String endpoint = "http://e1-dev.projet.college-em.info:8080";
-    //String endpoint = "http://10.0.2.2:52090";
+    //String endpoint = "http://e1-dev.projet.college-em.info:8080";
+    String endpoint = "http://10.0.2.2:52090";
 
     @GET("/api/values/")
     Call<String> getAllTest();

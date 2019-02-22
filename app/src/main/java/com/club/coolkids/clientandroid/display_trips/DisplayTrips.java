@@ -96,7 +96,7 @@ public class DisplayTrips extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         View header = navView.getHeaderView(0);
         TextView nav_user = header.findViewById(R.id.userName);
-        nav_user.setText(getIntent().getStringExtra("Username"));
+        nav_user.setText(getString(R.string.hello) + " " + getIntent().getStringExtra("Username"));
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -144,10 +144,9 @@ public class DisplayTrips extends AppCompatActivity {
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                progressD = ProgressDialog.show(DisplayTrips.this, "Veuillez patienter",
-                        "Attente de réponse du serveur", true);
-                finish();
-                startActivity(getIntent());
+//                progressD = ProgressDialog.show(DisplayTrips.this, "Veuillez patienter",
+//                        "Attente de réponse du serveur", true);
+                getTrips();
                 pullToRefresh.setRefreshing(false);
             }
         });

@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     TextInputLayout passwordInputLayout;
 
     IDataService serverService;
+    ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
         disableButton(loginButton);
 
         //Progress dialog
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage(getString(R.string.Athenticating));
         progressDialog.show();
@@ -102,16 +103,17 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
                 if(response.isSuccessful()){
-                    progressDialog.dismiss();
+                    disableButton(loginButton);
                     Token.token = response.body();
                     Intent i = new Intent(getApplicationContext(),DisplayTrips.class);
                     i.putExtra("Username", username);
+                    progressDialog.dismiss();
                     startActivity(i);
                 }
                 else
                 {
                     Log.i("Retrofit", "code " + response.code());
-                    Toast.makeText(getApplicationContext(), R.string.serverError, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                     enableButton(loginButton);
                 }
@@ -164,5 +166,15 @@ public class LoginActivity extends AppCompatActivity {
         btn.setEnabled(false);
         btn.setTextColor(getResources().getColor(R.color.colorTextDisabled));
         btn.setBackgroundColor(getResources().getColor(R.color.lightGray));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

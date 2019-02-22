@@ -56,4 +56,5 @@
     <string name="deleteFriend">Delete</string>
     <string name="usersAdded">The users have been added</string>
     <string name="hello">"Hello "</string>
+    <string name="connectionError">The username or password is invalid</string>
 </resources>

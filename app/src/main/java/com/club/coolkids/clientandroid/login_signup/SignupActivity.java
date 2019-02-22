@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.club.coolkids.clientandroid.R;
 import com.club.coolkids.clientandroid.display_trips.DisplayTrips;
 import com.club.coolkids.clientandroid.models.LogInfo;
+import com.club.coolkids.clientandroid.models.NewBus;
 import com.club.coolkids.clientandroid.models.Token;
 import com.club.coolkids.clientandroid.services.DataService;
 import com.club.coolkids.clientandroid.services.IDataService;
@@ -27,17 +28,24 @@ import retrofit2.Response;
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
-    EditText firstNameText;
-    EditText nameText;
-    EditText usernameText;
-    EditText passwordText;
-    EditText confirmPasswordText;
-    Button signupButton;
-    TextView loginLink;
-    TextInputLayout passwordInputLayout;
-    TextInputLayout confirmPasswordInputLayout;
+    private EditText firstNameText;
+    private EditText nameText;
+    private EditText usernameText;
+    private EditText passwordText;
+    private EditText confirmPasswordText;
+    private Button signupButton;
+    private TextView loginLink;
+    private TextInputLayout passwordInputLayout;
+    private TextInputLayout confirmPasswordInputLayout;
+    private TextInputLayout firstnameInputLayout;
+    private TextInputLayout nameInputLayout;
+    private TextInputLayout usernameInputLayout;
 
-    IDataService serverService;
+    private IDataService serverService;
+    private ProgressDialog progressDialog;
+
+    private String username;
+    private String password;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +62,9 @@ public class SignupActivity extends AppCompatActivity {
         confirmPasswordText = findViewById(R.id.input_confirmPassword);
         passwordInputLayout = findViewById(R.id.inputLayout_passwordSignup);
         confirmPasswordInputLayout = findViewById(R.id.inputLayout_confirmPassword);
+        firstnameInputLayout = findViewById(R.id.inputLayout_firstname);
+        nameInputLayout = findViewById(R.id.inputLayout_name);
+        usernameInputLayout = findViewById(R.id.inputLayout_usernameSignup);
 
         //Bouton pour s'enregistrer
         signupButton.setOnClickListener(new View.OnClickListener() {
@@ -74,22 +85,6 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    //Empêche l'utilisateur de mettre un espace dans son mot de passe
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (passwordText.hasFocus()) {
-            if (keyCode == KeyEvent.KEYCODE_SPACE) {
-                return false;
-            }
-        }
-        else if (confirmPasswordText.hasFocus()) {
-            if (keyCode == KeyEvent.KEYCODE_SPACE) {
-                return false;
-            }
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
     //Méthode pour s'enregistrer
     public void signup() {
         Log.d(TAG, "Signup");
@@ -99,15 +94,15 @@ public class SignupActivity extends AppCompatActivity {
         }
         disableButton(signupButton);
         //Progress dialog
-        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this);
+        progressDialog = new ProgressDialog(SignupActivity.this);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage(getText(R.string.CreatingAccount));
         progressDialog.show();
 
         String firstName = firstNameText.getText().toString();
         String name = nameText.getText().toString();
-        final String username = usernameText.getText().toString();
-        final String password = passwordText.getText().toString();
+        username = usernameText.getText().toString();
+        password = passwordText.getText().toString();
         LogInfo logInfo = new LogInfo(username, password, firstName, name);
 
         serverService = DataService.getInstance().service;
@@ -115,39 +110,48 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if(response.isSuccessful()){ //Si successful, tente de logger l'utilisateur sur-le-champ
-                    serverService.signin("application/x-www-form-urlencoded", username, password, "password").enqueue(new Callback<Token>() {
-                        @Override
-                        public void onResponse(Call<Token> call, Response<Token> response) {
-                            if(response.isSuccessful()){
-                                Token.token = response.body();
-                                Intent i = new Intent(getApplicationContext(),DisplayTrips.class);
-                                i.putExtra("Username", username);
-                                startActivity(i);
-                                progressDialog.dismiss();}
-                            else{
-                                Log.i("Retrofit", "code " + response.code());
-                                Toast.makeText(getApplicationContext(), R.string.serverError + " " + response.code(), Toast.LENGTH_SHORT).show();}}
-                        @Override
-                        public void onFailure(Call<Token> call, Throwable t) {
-                            Log.i("Retrofit", "code " + t.getMessage());
-                            Toast.makeText(getApplicationContext(), R.string.serverError + " " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                        }});}
+                    login();
+                }
                 else {//Si unsuccessful, le seul champ que l'api peut refuser est le username, donc erreur sur le username
-                    Toast.makeText(getApplicationContext(), R.string.usernameExists, Toast.LENGTH_SHORT).show();
+                    usernameInputLayout.setError(getText(R.string.usernameExists));
                     progressDialog.dismiss();
+                    enableButton(signupButton);
                 }
             }
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), R.string.serverError, Toast.LENGTH_SHORT).show();}
+                Toast.makeText(getApplicationContext(), R.string.serverError, Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+                enableButton(signupButton);
+            }
         });
     }
 
 
-    public void onSignupSuccess() {
-        enableButton(signupButton);
-        setResult(RESULT_OK, null);
-        finish();
+    public void login() {
+        username = usernameText.getText().toString();
+        password = passwordText.getText().toString();
+        serverService.signin("application/x-www-form-urlencoded", username, password, "password").enqueue(new Callback<Token>() {
+            @Override
+            public void onResponse(Call<Token> call, Response<Token> response) {
+                if(response.isSuccessful()){
+                    disableButton(signupButton);
+                    Token.token = response.body();
+                    Intent i = new Intent(getApplicationContext(),DisplayTrips.class);
+                    i.putExtra("Username", username);
+                    progressDialog.dismiss();
+                    startActivity(i);}
+                else{
+                    Log.i("Retrofit", "code " + response.code());
+                    Toast.makeText(getApplicationContext(), R.string.serverError + " " + getString(response.code()), Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();}}
+            @Override
+            public void onFailure(Call<Token> call, Throwable t) {
+                Log.i("Retrofit", "code " + t.getMessage());
+                Toast.makeText(getApplicationContext(), R.string.serverError + " " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+                enableButton(signupButton);
+            }});
     }
 
     public void onSignupFailed() {
@@ -166,24 +170,24 @@ public class SignupActivity extends AppCompatActivity {
         String confirmPassword = confirmPasswordText.getText().toString();
 
         if (firstName.isEmpty() || firstName.length() < 1 || firstName.length() > 50) {
-            firstNameText.setError(getText(R.string.firstNameError));
+            firstnameInputLayout.setError(getText(R.string.firstNameError));
             valid = false;
         } else {
-            firstNameText.setError(null);
+            firstnameInputLayout.setError(null);
         }
 
         if (name.isEmpty() || name.length() < 1 || name.length() > 50) {
-            nameText.setError(getText(R.string.nameError));
+            nameInputLayout.setError(getText(R.string.nameError));
             valid = false;
         } else {
-            nameText.setError(null);
+            nameInputLayout.setError(null);
         }
 
         if (username.isEmpty() || username.length() < 5 || username.length() > 35) {
-            usernameText.setError(getText(R.string.usernameSignupError));
+            usernameInputLayout.setError(getText(R.string.usernameSignupError));
             valid = false;
         } else {
-            usernameText.setError(null);
+            usernameInputLayout.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 8 || password.length() > 35) {
@@ -213,5 +217,15 @@ public class SignupActivity extends AppCompatActivity {
         btn.setEnabled(false);
         btn.setTextColor(getResources().getColor(R.color.colorTextDisabled));
         btn.setBackgroundColor(getResources().getColor(R.color.lightGray));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

@@ -174,7 +174,8 @@ public class AddFriendsDialogFragment extends DialogFragment {
         _btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Validation du nom de l'activité
+                if(_nameText.getText().toString().trim() == "" || _nameText.getText().toString().isEmpty())
+                    return;
                 final String name = _nameText.getText().toString().trim();
                 Log.i("EVENT", "Event Add User");
                 UserSearchResultDTO u = mUser;
