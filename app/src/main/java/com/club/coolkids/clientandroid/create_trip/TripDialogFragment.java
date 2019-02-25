@@ -2,6 +2,7 @@ package com.club.coolkids.clientandroid.create_trip;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,12 +18,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.club.coolkids.clientandroid.R;
+import com.club.coolkids.clientandroid.events.EventGetLocation;
 import com.club.coolkids.clientandroid.models.dtos.CreateTripDTO;
 import com.club.coolkids.clientandroid.events.EventNewTrip;
 import com.club.coolkids.clientandroid.models.NewBus;
 import com.club.coolkids.clientandroid.models.Token;
 import com.club.coolkids.clientandroid.services.DataService;
 import com.club.coolkids.clientandroid.services.IDataService;
+import com.squareup.otto.Subscribe;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +38,8 @@ public class TripDialogFragment extends DialogFragment {
     Button _btnCancel;
     IDataService serverService;
     TextInputLayout _inputLayout_addedTripItem;
+    EditText input_place;
+    TextInputLayout inputLayout_place;
     private ProgressDialog progressD;
 
     public TripDialogFragment(){}
@@ -68,9 +73,17 @@ public class TripDialogFragment extends DialogFragment {
         _btnAdd = v.findViewById(R.id.btn_add);
         _btnCancel = v.findViewById(R.id.btn_cancel);
         _inputLayout_addedTripItem = v.findViewById(R.id.inputLayout_addedTripName);
+        input_place = v.findViewById(R.id.input_place);
 
         serverService = DataService.getInstance().service;
 
+        input_place.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(),MapsActivity.class);
+                startActivity(i);
+            }
+        });
 
         _btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,4 +136,20 @@ public class TripDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+    @Override
+    public void onPause() {
+        NewBus.bus.unregister(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        NewBus.bus.register(this);
+        super.onResume();
+    }
+
+    @Subscribe
+    public void getLocationEvent(EventGetLocation e){
+
+    }
 }

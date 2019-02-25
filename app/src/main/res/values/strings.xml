@@ -60,4 +60,10 @@
     <string name="hello">Bonjour</string>
     <string name="connectionError">Le nom d\'utilisateur ou le mot de passe est incorrect</string>
     <string name="comments">Commentaires</string>
+    <string name="yourComment">Votre commentaire</string>
+    <string name="submit">Soumettre</string>
+    <string name="CommentCreated">Commentaire créé</string>
+    <string name="place">Emplacement</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="error_api_key">Clé API</string>
 </resources>

@@ -2,34 +2,43 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.club.coolkids.clientandroid">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
-        android:persistent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:persistent="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".create_post.CreatePost" />
         <activity android:name=".display_trips.DisplayTrips" />
         <activity android:name=".display_activities.DisplayActivities" />
-        <activity android:name=".login_signup.LoginActivity"
+        <activity
+            android:name=".login_signup.LoginActivity"
             android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".login_signup.SignupActivity" android:noHistory="true"
+        <activity
+            android:name=".login_signup.SignupActivity"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".display_posts.DisplayPosts" />
         <activity
             android:name=".display_post_details.PostDetails"
             android:label="@string/title_activity_post_details"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".create_trip.MapsActivity"
+            android:label="@string/title_activity_maps"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

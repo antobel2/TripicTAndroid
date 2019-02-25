@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ public class DisplayPostAdapter extends RecyclerView.Adapter<DisplayPostAdapter.
         public TextView textNumberOfPics;
         public ImageView imageView;
         public TextView textUsername;
+        public FrameLayout frame;
         public List<String> idTableForPost;
 
         public MyViewHolder(LinearLayout v) {
@@ -48,6 +50,7 @@ public class DisplayPostAdapter extends RecyclerView.Adapter<DisplayPostAdapter.
             textNumberOfPics = v.findViewById(R.id.imagePreviewTextNumber);
             imageView = v.findViewById(R.id.imagePreviewPost);
             textUsername = v.findViewById(R.id.tvDisplayPost_Username);
+            frame = v.findViewById(R.id.frame);
         }
 
         // MEthode qui bind les bon items du recycler view pour le onclicklistener pour envoyer a l'activite details avec le bon post
@@ -95,10 +98,12 @@ public class DisplayPostAdapter extends RecyclerView.Adapter<DisplayPostAdapter.
         holder.postDateTextView.setText("");
         holder.textNumberOfPics.setVisibility(View.INVISIBLE);
         holder.textUsername.setText("");
+        holder.frame.setVisibility(View.VISIBLE);
         Glide.with(holder.postDateTextView.getContext()).clear(holder.imageView);
 
         //Pas de photo dans le post, afficher l'image pas de photo
         if (mCurrentPost.idTable.size() == 0){
+            holder.frame.setVisibility(View.GONE);
             holder.imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             Glide.with(holder.postDateTextView.getContext())
                     .asBitmap()

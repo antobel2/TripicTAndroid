@@ -3,6 +3,7 @@ package com.club.coolkids.clientandroid.services;
 import com.club.coolkids.clientandroid.models.dtos.ActivityDTO;
 import com.club.coolkids.clientandroid.models.dtos.CommentDTO;
 import com.club.coolkids.clientandroid.models.dtos.CreateActivityDTO;
+import com.club.coolkids.clientandroid.models.dtos.CreateCommentDTO;
 import com.club.coolkids.clientandroid.models.dtos.CreatePictureDTO;
 import com.club.coolkids.clientandroid.models.dtos.CreatePostDTO;
 import com.club.coolkids.clientandroid.models.dtos.InviteUserToTripDTO;
@@ -86,7 +87,10 @@ public interface IDataService {
     Call<SignedInUserDTO> getCurrentUser(@Header("Authorization") String authorization);
 
     @GET("api/Comments/GetCommentsByPostId/{id}")
-    Call <List<CommentDTO>> getCommentsByPostId(@Header("Authorization") String authorization, @Path("id") int id);
+    Call<List<CommentDTO>> getCommentsByPostId(@Header("Authorization") String authorization, @Path("id") int id);
+
+    @POST("api/Comments/CreateComment")
+    Call<Void> createComment(@Header("Authorization") String authorization, @Body CreateCommentDTO createCommentDTO);
 
      /*
     @GET("/pokemons/{id}/{uid}/details/")
