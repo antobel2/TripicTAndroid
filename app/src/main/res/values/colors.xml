@@ -17,4 +17,5 @@
     <color name="colorTextDisabled">#FFF</color>
     <color name="bonusColor">#6AA3BA</color>
     <color name="gray">#b9b9b9</color>
+    <color name="colorTrans">#9affffff</color>
 </resources>

@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.club.coolkids.clientandroid.display_activities.DisplayActivities;
 import com.club.coolkids.clientandroid.R;
+import com.club.coolkids.clientandroid.events.EventGetTrips;
 import com.club.coolkids.clientandroid.login_signup.LoginActivity;
 import com.club.coolkids.clientandroid.create_trip.TripDialogFragment;
 import com.club.coolkids.clientandroid.models.dtos.SignedInUserDTO;
@@ -141,6 +142,7 @@ public class DisplayTrips extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.menu_displayTrips) {
                     Intent i = new Intent(getApplicationContext(), DisplayTrips.class);
+                    finish();
                     startActivity(i);
                 } else if (item.getItemId() == R.id.menu_logout) {
                     serverService.logout("Bearer " + Token.token.getToken()).enqueue(new Callback<Void>() {
@@ -149,6 +151,7 @@ public class DisplayTrips extends AppCompatActivity {
                             if (response.isSuccessful()) {
                                 Token.token.deleteToken();
                                 Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                                finish();
                                 startActivity(i);
                             } else {
                                 Log.i("Retrofit", "code " + response.code());
@@ -255,6 +258,12 @@ public class DisplayTrips extends AppCompatActivity {
     protected void onResume() {
         NewBus.bus.register(this);
         super.onResume();
+    }
+
+    @Subscribe
+    public void getTripsEvent(EventGetTrips e) {
+        finish();
+        startActivity(getIntent());
     }
 
     @Subscribe

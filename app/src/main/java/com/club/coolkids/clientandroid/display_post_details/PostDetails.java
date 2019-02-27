@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,12 +40,15 @@ public class PostDetails extends AppCompatActivity {
         String postDate = myIntent.getStringExtra("date");
         String userName = myIntent.getStringExtra("userName");
 
-
         // ajouter les elements dans le ui
         CarouselView carouselView = findViewById(R.id.carouselView);
         carouselView.setPageCount(postIdTable.size());
 
+        FrameLayout frameLayout = findViewById(R.id.frameCarousel);
+        frameLayout.setVisibility(View.VISIBLE);
+
         if (postIdTable.size() == 0){
+            frameLayout.setVisibility(View.GONE);
             carouselView.setBackgroundResource(R.drawable.no_image_available2);
         }
 
@@ -54,8 +59,13 @@ public class PostDetails extends AppCompatActivity {
         TextView tvUsername = findViewById(R.id.tvDisplayPost_Username);
         tvUsername.setText(Token.token.getName());
         tvdisplayPost_description.setText(postText);
+        tvdisplayPost_description.setVisibility(View.VISIBLE);
 
-        TextView link_comments = findViewById(R.id.link_comments);
+        if (tvdisplayPost_description.getText().toString().isEmpty() || tvdisplayPost_description.getText().toString() == null || tvdisplayPost_description.getText().toString() == "") {
+            tvdisplayPost_description.setVisibility(View.GONE);
+        }
+
+        Button link_comments = findViewById(R.id.link_comments);
         link_comments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

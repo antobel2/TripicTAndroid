@@ -129,6 +129,11 @@ public class DisplayPostAdapter extends RecyclerView.Adapter<DisplayPostAdapter.
         holder.postDescriptionTextView.setText(mDataset[position].text);
         holder.postDateTextView.setText(mDataset[position].date);
         holder.textUsername.setText(Token.token.getName());
+
+        if (holder.postDescriptionTextView.getText().toString().isEmpty() || holder.postDescriptionTextView.getText().toString() == null || holder.postDescriptionTextView.getText().toString() == "") {
+            holder.postDescriptionTextView.setVisibility(View.GONE);
+        }
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)

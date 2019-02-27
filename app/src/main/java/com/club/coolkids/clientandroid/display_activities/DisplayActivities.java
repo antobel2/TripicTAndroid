@@ -112,6 +112,7 @@ public class DisplayActivities extends AppCompatActivity implements View.OnClick
                             {
                                 Token.token.deleteToken();
                                 Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                                finish();
                                 startActivity(i);
                             }
                             else

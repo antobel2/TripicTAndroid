@@ -15,17 +15,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.club.coolkids.clientandroid.R;
 import com.club.coolkids.clientandroid.events.EventGetLocation;
+import com.club.coolkids.clientandroid.events.EventGetTrips;
 import com.club.coolkids.clientandroid.models.dtos.CreateTripDTO;
 import com.club.coolkids.clientandroid.events.EventNewTrip;
 import com.club.coolkids.clientandroid.models.NewBus;
 import com.club.coolkids.clientandroid.models.Token;
 import com.club.coolkids.clientandroid.services.DataService;
 import com.club.coolkids.clientandroid.services.IDataService;
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.squareup.otto.Subscribe;
+
+import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,6 +51,9 @@ public class TripDialogFragment extends DialogFragment {
     EditText input_place;
     TextInputLayout inputLayout_place;
     private ProgressDialog progressD;
+    double _latitude;
+    double _longitude;
+    AutocompleteSupportFragment autocompleteFragment;
 
     public TripDialogFragment(){}
 
@@ -73,15 +86,47 @@ public class TripDialogFragment extends DialogFragment {
         _btnAdd = v.findViewById(R.id.btn_add);
         _btnCancel = v.findViewById(R.id.btn_cancel);
         _inputLayout_addedTripItem = v.findViewById(R.id.inputLayout_addedTripName);
-        input_place = v.findViewById(R.id.input_place);
+        LinearLayout llmaps = v.findViewById(R.id.llMaps);
 
         serverService = DataService.getInstance().service;
 
-        input_place.setOnClickListener(new View.OnClickListener() {
+        String apiKey = "AIzaSyDrNv1urfbos48QR2TFJRo7yhKrIfC9k9M";
+
+        if (apiKey.equals("")) {
+            Toast.makeText(getContext(), getString(R.string.error_api_key), Toast.LENGTH_LONG).show();
+        }
+
+        // Setup Places Client
+        if (!Places.isInitialized()) {
+            Places.initialize(getContext(), apiKey);
+            PlacesClient placesClient = Places.createClient(getContext());
+        }
+
+
+//        if(getActivity().getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment) != null) {
+//            getActivity().getSupportFragmentManager().beginTransaction().remove(getActivity().getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment)).commit();
+//        }
+
+        autocompleteFragment = (AutocompleteSupportFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+//        getActivity().getSupportFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.autocomplete_fragment, autocompleteFragment)
+//                .commit();
+
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getContext(),MapsActivity.class);
-                startActivity(i);
+            public void onPlaceSelected(Place place) {
+                _latitude = place.getLatLng().latitude;
+                _longitude = place.getLatLng().longitude;
+                Log.i("TAG", "Place: " + place.getName() + ", " + place.getId());
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i("TAG", "An error occurred: " + status);
             }
         });
 
@@ -100,7 +145,15 @@ public class TripDialogFragment extends DialogFragment {
                         getString(R.string.ServerAnswer), true);
 
                 //Création du voyage
-                CreateTripDTO tripToCreate = new CreateTripDTO(name);
+                CreateTripDTO tripToCreate;
+
+                if (_latitude != 0 && _longitude != 0) {
+                    tripToCreate = new CreateTripDTO(name, _latitude, _longitude);
+                }
+                else {
+                    tripToCreate = new CreateTripDTO(name);
+                }
+
                 serverService.createTrip("Bearer " + Token.token.getToken(), tripToCreate).enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
@@ -143,13 +196,14 @@ public class TripDialogFragment extends DialogFragment {
     }
 
     @Override
+    public void onDestroy() {
+        NewBus.bus.post(new EventGetTrips());
+        super.onDestroy();
+    }
+
+    @Override
     public void onResume() {
         NewBus.bus.register(this);
         super.onResume();
-    }
-
-    @Subscribe
-    public void getLocationEvent(EventGetLocation e){
-
     }
 }

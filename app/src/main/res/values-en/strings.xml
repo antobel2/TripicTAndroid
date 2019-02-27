@@ -15,8 +15,8 @@
     <string name="loginFailed">Login failed. Please fix errors</string>
     <string name="signupFailed">Signup failed. Please fix errors</string>
     <string name="serverError">Connection error</string>
-    <string name="usernameError">Please enter a valid username</string>
-    <string name="passwordError">Wrong password</string>
+    <string name="usernameError">Please enter a username between 5 and 35 characters</string>
+    <string name="passwordError">Please enter a password between 8 and 35 characters</string>
     <string name="firstName">First Name</string>
     <string name="name">Last Name</string>
     <string name="btnSignup">Create an account</string>
@@ -28,8 +28,8 @@
     <string name="login">Connection</string>
     <string name="open_drawer">Open</string>
     <string name="close_drawer">Close</string>
-    <string name="title_activity_post_details">Post\'s Details</string>
-    <string name="usernameSignupError">Please enter a username between 1 and 50 characters</string>
+    <string name="title_activity_post_details">Post Details</string>
+    <string name="usernameSignupError">Please enter a username between 5 and 35 characters</string>
     <string name="confirmPassword">Confirm Password</string>
     <string name="passwordConfirmingError">Passwords must be identical</string>
     <string name="displayTrips">Trips</string>
@@ -57,4 +57,10 @@
     <string name="usersAdded">The users have been added</string>
     <string name="hello">"Hello "</string>
     <string name="connectionError">The username or password is invalid</string>
+    <string name="comments">Comments</string>
+    <string name="yourComment">Your comment</string>
+    <string name="submit">Submit</string>
+    <string name="CommentCreated">Comment created</string>
+    <string name="place">Location</string>
+    <string name="location">Location</string>
 </resources>

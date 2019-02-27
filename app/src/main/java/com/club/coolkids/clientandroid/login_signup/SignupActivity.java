@@ -139,6 +139,7 @@ public class SignupActivity extends AppCompatActivity {
                     Intent i = new Intent(getApplicationContext(),DisplayTrips.class);
                     i.putExtra("Username", username);
                     progressDialog.dismiss();
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);}
                 else{
                     Log.i("Retrofit", "code " + response.code());
@@ -154,7 +155,6 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void onSignupFailed() {
-        Toast.makeText(getBaseContext(),  R.string.signupFailed, Toast.LENGTH_LONG).show();
         enableButton(signupButton);
     }
 

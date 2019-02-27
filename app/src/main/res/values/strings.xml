@@ -16,8 +16,8 @@
     <string name="loginFailed">Échec de la connexion. Veuillez corriger les erreurs</string>
     <string name="signupFailed">Échec de la création de votre compte. Veuillez corriger les erreurs</string>
     <string name="serverError">Échec de connexion au serveur</string>
-    <string name="usernameError">Veuillez saisir un nom d\'utilisateur valide</string>
-    <string name="passwordError">Mauvais mot de passe</string>
+    <string name="usernameError">Veuillez saisir un nom d\'utilisateur entre 5 et 35 caractères</string>
+    <string name="passwordError">Veuillez saisir un mot de passe entre 8 et 35 caractères</string>
     <string name="firstName">Prénom</string>
     <string name="name">Nom de famille</string>
     <string name="btnSignup">Créer un compte</string>
@@ -66,4 +66,5 @@
     <string name="place">Emplacement</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="error_api_key">Clé API</string>
+    <string name="location">Emplacement</string>
 </resources>

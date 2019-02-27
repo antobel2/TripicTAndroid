@@ -119,12 +119,17 @@ public class AddFriendsDialogFragment extends DialogFragment {
 
             @Override
             public void onTextChanged(final CharSequence s, int start, int before, int count) {
+                if (s == " ")
+                {return;}
                 try{
                     Log.e("AutoComplete", "User input: " + s);
                     // update the adapater
                     _adapter.notifyDataSetChanged();
 
-                    if (s.toString() != "" && s.length() != 0 && _nameText.getText().toString().trim() != ""){
+                    if (s.toString() == " ") {
+                        return;
+                    }
+                    else if (s.toString() != "" && s.length() != 0 && _nameText.getText().toString().trim() != ""){
                         //Rempli la liste de suggestions
                         serverService.findUsers("Bearer " + Token.token.getToken(), getActivity().getIntent().getIntExtra("TripId", 0), s.toString()).enqueue(new Callback<List<UserSearchResultDTO>>() {
                             @Override
@@ -149,14 +154,14 @@ public class AddFriendsDialogFragment extends DialogFragment {
                                 }
                                 else {
                                     Log.i("Retrofit", "code " + response.code());
-                                    Toast.makeText(getContext(), R.string.serverError, Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getContext(), R.string.serverError, Toast.LENGTH_SHORT).show();
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<List<UserSearchResultDTO>> call, Throwable t) {
                                 Log.i("Retrofit", "code " + t.getMessage());
-                                Toast.makeText(getContext(), R.string.serverError, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getContext(), R.string.serverError, Toast.LENGTH_SHORT).show();
                                 progressD.dismiss();
                             }
                         });

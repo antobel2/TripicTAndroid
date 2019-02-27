@@ -4,9 +4,11 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:icon="@drawable/ic_airplanemode_active_black_24dp"
             android:id="@+id/menu_displayTrips"
             android:title="@string/displayTrips" />
         <item
+            android:icon="@drawable/ic_power_settings_new_black_24dp"
             android:id="@+id/menu_logout"
             android:title="@string/logout" />
     </group>

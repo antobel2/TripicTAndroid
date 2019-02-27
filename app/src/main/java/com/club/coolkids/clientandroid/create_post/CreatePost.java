@@ -183,7 +183,6 @@ public class CreatePost extends AppCompatActivity {
 
                         uploadFinishedUpdater(true);
                         Integer postId = response.body();
-                        Toast.makeText(getApplicationContext(), R.string.postUploaderAddPictures, Toast.LENGTH_SHORT).show();
                         Log.i("understandingUIbug", "Post created");
                         for (ImageUploadElement element : images) {
                             element.progressState = EnuProgress.ongoing;

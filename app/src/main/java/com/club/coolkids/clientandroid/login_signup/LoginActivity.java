@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     Button loginButton;
     TextView signupLink;
     TextInputLayout passwordInputLayout;
+    TextInputLayout usernameInputLayout;
 
     IDataService serverService;
     ProgressDialog progressDialog;
@@ -48,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.btn_login);
         signupLink = findViewById(R.id.link_signup);
         passwordInputLayout = findViewById(R.id.inputLayout_passwordLogin);
+        usernameInputLayout = findViewById(R.id.inputLayout_username);
 
         //Bouton pour se logger
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -97,12 +99,13 @@ public class LoginActivity extends AppCompatActivity {
                     Intent i = new Intent(getApplicationContext(),DisplayTrips.class);
                     i.putExtra("Username", username);
                     progressDialog.dismiss();
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 }
                 else
                 {
                     Log.i("Retrofit", "code " + response.code());
-                    Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_SHORT).show();
+                    passwordInputLayout.setError(getString(R.string.connectionError));
                     progressDialog.dismiss();
                     enableButton(loginButton);
                 }
@@ -118,7 +121,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), R.string.loginFailed, Toast.LENGTH_LONG).show();
         enableButton(loginButton);
     }
 
@@ -129,10 +131,10 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordText.getText().toString();
 
         if (username.isEmpty() || username.length() < 5 || username.length() > 35) {
-            usernameText.setError(getString(R.string.usernameError));
+            usernameInputLayout.setError(getString(R.string.usernameError));
             valid = false;
         } else {
-            usernameText.setError(null);
+            usernameInputLayout.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 8 || password.length() > 35) {
